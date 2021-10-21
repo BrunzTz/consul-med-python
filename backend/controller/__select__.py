@@ -1,20 +1,20 @@
-import sys  
+import sys
 
 #caminho para conexao
-sys.path.insert(0, 'caminho para conexão')
+sys.path.insert(0, 'C:/Users/AULA/OneDrive/Área de Trabalho/consul-med-python/backend/model/')
+sys.path.insert(1, 'C:/Users/AULA/OneDrive/Área de Trabalho/consul-med-python/backend/database/')
+
 from __connection__ import myConn
+from __pessoa__ import *
+
+#Pessoa
+doSelectAllPessoa()
+doSelectSinglePessoa("27")
+
+#Paciente
 
 
-def doSelect( conn ) :
-    cur = conn.cursor()
+#Funcionario
 
-    cur.execute("SELECT nome, sexo, data_nasc, email FROM clinica.pessoa")
 
-    for nome, sexo, data_nasc, email in cur.fetchall() :
-        print( nome, sexo, data_nasc, email )
-
-    cur.close()
-
-connect = myConn()
-
-doSelect(connect)
+#Medico

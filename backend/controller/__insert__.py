@@ -1,36 +1,59 @@
 import sys
-import psycopg2
 
-#colocar o caminho da pasta onde se localiza a conexão no sistema
-sys.path.insert(0, 'caminho para conexão')
-sys.path.insert(1, 'caminho para model')
+#caminho para conexao
+sys.path.insert(0, 'C:/Users/AULA/OneDrive/Área de Trabalho/consul-med-python/backend/model/')
+sys.path.insert(1, 'C:/Users/AULA/OneDrive/Área de Trabalho/consul-med-python/backend/database/')
 
 from __connection__ import myConn
 from __pessoa__ import *
+from __paciente__ import *
+from __funcionario__ import *
+from __medico__ import *
+from __atribuicao__ import *
 
-def doInsertPessoa(conn, nome, endereco, telefone, cpf, sexo, data_nasc, email) :
+#Inserir Paciente
+def insertPaciente(nome, endereco, telefone, cpf, sexo, data_nasc, email, peso, altura, pressao, tipo_sang):
 
+    pessoa = Pessoa(nome, endereco, telefone, cpf, sexo, data_nasc, email)
+
+    def id_pessoa(pessoa):
+        id = doInsertPessoa(pessoa.getNome(), pessoa.getEndereco(), pessoa.getTelefone(), pessoa.getCPF(), pessoa.getSexo(), pessoa.getData_nasc(), pessoa.getEmail())
+        return id
+
+    id = id_pessoa(pessoa)
+
+    def insertPaciente(id_pessoa, peso, altura, pressao, tipo_sang):
+        paciente = doInsertPaciente(id_pessoa, peso, altura, pressao, tipo_sang)
+
+    insertPaciente(id, peso, altura, pressao, tipo_sang)
+
+#Inserir Atribuição
+def insertAtribuicao(tipo):
+
+    id = doInsertAtribuicao(tipo)
+    return id
     
-    sql = """INSERT INTO clinica.pessoa (nome, endereco, telefone, cpf, sexo, data_nasc, email) VALUES (%s, %s, %s, %s, %s, %s, %s)"""
-    try:
-        cur = conn.cursor()
-        cur.execute(sql, (nome, endereco, telefone, cpf, sexo, data_nasc, email))
-        
-        conn.commit()
+#Inserir Funcionário
+def insertFuncionario(nome, endereco, telefone, cpf, sexo, data_nasc, email, supervisor, salario, tipo_atribuicao):
 
-        cur.close()
+    pessoa = Pessoa(nome, endereco, telefone, cpf, sexo, data_nasc, email)
 
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
+    def id_pessoa(pessoa):
+        id = doInsertPessoa(pessoa.getNome(), pessoa.getEndereco(), pessoa.getTelefone(), pessoa.getCPF(), pessoa.getSexo(), pessoa.getData_nasc(), pessoa.getEmail())
+        return id
 
-    finally:
-        if conn is not None:
-            conn.close()
+    idPessoa = id_pessoa(pessoa)
 
-    return sexo
-    
-pessoa = Pessoa('teste5', 'teste endereço2', '3444423', '9215643', 'F', '2021-01-01', 'teste3@email.com')
+    idAtribuicao = doSelectSingleAtribuicao(tipo_atribuicao)
 
-connect = myConn()
-doInsertPessoa(connect, pessoa.getNome(), pessoa.getEndereco(), pessoa.getTelefone(), pessoa.getCPF(), pessoa.getSexo(), pessoa.getData_nasc(), pessoa.getEmail())
-print(pessoa.getEmail())
+    doinsertFuncionario(idPessoa, idAtribuicao, salario, supervisor)
+
+    return
+
+
+
+
+pessoa = Pessoa("Luis", "Rua tal", "1234", "1234", "M", "2021-01-01", "luuis@email.com")
+
+id_pessoa = doInsertPessoa(pessoa.getNome(), pessoa.getEndereco(), pessoa.getTelefone(), pessoa.getCPF(), pessoa.getSexo(), pessoa.getData_nasc(), pessoa.getEmail())
+print(id_pessoa)
