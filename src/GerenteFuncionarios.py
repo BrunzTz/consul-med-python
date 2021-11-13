@@ -64,7 +64,7 @@ tv.heading('id', text='ID')
 tv.heading('nome', text='Nome')
 tv.heading('fone', text='Telefone')
 tv.pack()
-canvas1.create_window(500, 280), width= 450, height= 200, window=Treeview)
+canvas1.create_window((500, 280), width= 450, height= 200, window=tv)
 
 
 #fim
